@@ -1,0 +1,11 @@
+# Minimal Supabase CLI config.
+# Run: npx supabase link --project-ref YOUR_REF
+# Docs: https://supabase.com/docs/guides/cli
+
+project_id = "zenkernel"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15

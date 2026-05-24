@@ -1,65 +1,86 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { Section, SectionHeader } from "@/components/ui/section";
+import { ServiceCard } from "@/features/services/components/service-card";
+import { getServices } from "@/features/services/queries/get-services";
+import { siteConfig } from "@/lib/constants";
 
-export default function Home() {
+export default async function Home() {
+  const services = await getServices();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+  <>
+    <Header />
+    <main>
+      <Section className="bg-gradient-to-b from-zinc-50 to-white pt-20 md:pt-28">
+        <div className="max-w-3xl">
+          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-zinc-500">
+            Technology partner
           </p>
+          <h1 className="text-4xl font-semibold tracking-tight text-zinc-900 md:text-6xl md:leading-tight">
+            Consult. Design. Implement.
+          </h1>
+          <p className="mt-6 text-lg leading-relaxed text-zinc-600 md:text-xl">
+            {siteConfig.name} helps teams build reliable digital platforms — from strategy
+            and architecture through to production delivery.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link
+              href="/contact"
+              className="rounded-full bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-700"
+            >
+              Start a conversation
+            </Link>
+            <Link
+              href="/services"
+              className="rounded-full border border-zinc-300 px-6 py-3 text-sm font-medium text-zinc-900 transition-colors hover:border-zinc-900"
+            >
+              Explore services
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </Section>
+
+      <Section id="services">
+        <SectionHeader
+          eyebrow="What we do"
+          title="End-to-end technology services"
+          description="Three complementary capabilities to take you from idea to production."
+        />
+        <div className="grid gap-6 md:grid-cols-3">
+          {services.map((service) => (
+            <ServiceCard
+              key={service.slug}
+              title={service.title}
+              tagline={service.tagline}
+              description={service.description}
+              highlights={service.highlights}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          ))}
         </div>
-      </main>
-    </div>
+      </Section>
+
+      <Section className="bg-zinc-900 text-white">
+        <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+          <div className="max-w-xl">
+            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              Ready to move your platform forward?
+            </h2>
+            <p className="mt-4 text-lg text-zinc-300">
+              Tell us about your goals — we will respond with a clear next step, not a sales pitch.
+            </p>
+          </div>
+          <Link
+            href="/contact"
+            className="shrink-0 rounded-full bg-white px-6 py-3 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100"
+          >
+            Contact us
+          </Link>
+        </div>
+      </Section>
+    </main>
+    <Footer />
+  </>
   );
 }
